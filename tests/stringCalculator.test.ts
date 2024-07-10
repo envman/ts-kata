@@ -11,9 +11,10 @@ export function add(input: string) {
     return 0;
   }
 
-  if (numberString.includes("-")) throw new Error("Negatives not allowed!");
-
   const numbers = numberString.split("\n").join(delimiter).split(delimiter);
+
+  const negativeNumbers = numbers.filter(x => parseInt(x) < 0);
+  if (negativeNumbers.length) throw new Error(`Negatives not allowed! Received ${negativeNumbers.join(", ")}`);
 
   return numbers.reduce((total, x) => total + parseInt(x), 0);
 }
