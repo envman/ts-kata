@@ -80,4 +80,7 @@ describe("add", () => {
         const result = add("//;\n1;2");
         expect(result).toEqual(expected)
     })
+    test("throws error for negative inputs", () => {
+        expect(() => add("3,-1")).toThrow(/Negatives not allowed!/);
+    })
 })
