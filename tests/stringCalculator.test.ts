@@ -1,5 +1,5 @@
 import { describe, it, expect } from "@jest/globals";
-import { add } from "./stringCalculator";
+import { add } from "../src/stringCalculator";
 
 describe("add", () => {
   it("accepts an empty string and returns 0", () => {
@@ -64,8 +64,8 @@ describe("add", () => {
     expect(() => add("3,-1")).toThrow(/-1/);
   });
   it("ignores numbers bigger than 1000", () => {
-    const input = "1000,1,1,1000";
-    const expected = 2;
+    const input = "1001,1,1,1000";
+    const expected = 1002;
     const result = add(input);
     expect(result).toEqual(expected);
   });
