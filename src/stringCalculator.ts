@@ -1,5 +1,16 @@
 export function add(input: string) {
-  const { delimiter = ",", rest: numberString } = extractDelimiter(input);
+  let delimiter = ",";
+  let numberString = input;
+
+  if (input.startsWith("//")) {
+    delimiter = input.substring(2, 3);
+    numberString = input.replace(`//${delimiter}\n`, "");
+
+    const delimiterMatch = RegExp(/\/\/\[(.+?)\]\n(.*)/).exec(input);
+    if (delimiterMatch) {
+      [, delimiter, numberString] = delimiterMatch.filter((v) => !!v);
+    }
+  }
 
   const numbers = parseData(numberString, delimiter);
 
@@ -10,18 +21,6 @@ export function add(input: string) {
     );
 
   return numbers.reduce((total, x) => total + x, 0);
-}
-
-function extractDelimiter(input: string) {
-  const delimiterPattern = RegExp(/\/\/(?:(.)|(?:\[(.+?)\]))\n(.*)/);
-  const delimiterMatch = delimiterPattern.exec(input);
-
-  if (delimiterMatch) {
-    const [_, delimiter, rest = ""] = delimiterMatch.filter((v) => !!v);
-    return { delimiter, rest };
-  }
-
-  return { rest: input };
 }
 
 function parseData(numberString: string, delimiter: string) {
