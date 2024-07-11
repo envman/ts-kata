@@ -1,23 +1,5 @@
 import { describe, it, expect } from "@jest/globals";
-
-export function add(input: string) {
-  let delimiter = ",";
-  if (input.substring(0, 2) === "//") {
-    delimiter = input.substring(2, 3);
-  }
-  const numberString = input.replace(`//${delimiter}\n`, "");
-
-  if (!numberString.length) {
-    return 0;
-  }
-
-  const numbers = numberString.split("\n").join(delimiter).split(delimiter);
-
-  const negativeNumbers = numbers.filter(x => parseInt(x) < 0);
-  if (negativeNumbers.length) throw new Error(`Negatives not allowed! Received ${negativeNumbers.join(", ")}`);
-
-  return numbers.reduce((total, x) => total + parseInt(x), 0);
-}
+import { add } from "./stringCalculator";
 
 describe("add", () => {
   it("accepts an empty string and returns 0", () => {
@@ -76,9 +58,15 @@ describe("add", () => {
     expect(result).toEqual(expected);
   });
   it("throws error for negative inputs", () => {
-    expect(() => add("3,-1")).toThrow(Error);
+    expect(() => add("3,-1")).toThrow(/Negatives not allowed!/);
   });
   it("includes any negative values in the error's message", () => {
     expect(() => add("3,-1")).toThrow(/-1/);
+  });
+  it("ignores numbers bigger than 1000", () => {
+    const input = "1000,1,1,1000";
+    const expected = 2;
+    const result = add(input);
+    expect(result).toEqual(expected);
   });
 });
