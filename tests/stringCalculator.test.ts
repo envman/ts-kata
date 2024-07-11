@@ -69,4 +69,10 @@ describe("add", () => {
     const result = add(input);
     expect(result).toEqual(expected);
   });
+  it("accepts a delimiter with multiple characters", () => {
+    const input = "//[***]\n1***2***3";
+    const expected = 6;
+    const result = add(input);
+    expect(result).toEqual(expected);
+  });
 });
